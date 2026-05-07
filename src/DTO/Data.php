@@ -9,7 +9,7 @@ use Gabriel\FluentData\DTO\Attributes\Required;
 
 abstract class Data
 {
-    public function fromArray(array $data): static
+    public static function fromArray(array $data): static
     {
         $instance = new static;
 
