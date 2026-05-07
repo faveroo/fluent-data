@@ -21,7 +21,6 @@ class Pipeline
     public function through(array $pipes): static
     {
         $this->pipes = $pipes;
-        var_dump($this);
         return $this;
     }
 
