@@ -1,0 +1,22 @@
+{
+    "name": "gabriel.hoffmann/fluent-data",
+    "description": "Fluent Utility package for PHP",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Gabriel\\FluentData\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "faveroo",
+            "email": "gabriel290974@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
