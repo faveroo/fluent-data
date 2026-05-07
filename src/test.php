@@ -1,6 +1,8 @@
 <?php
 
 use Gabriel\FluentData\Collections\Collection;
+use Gabriel\FluentData\DTO\Attributes\Required;
+use Gabriel\FluentData\DTO\Data;
 
 require 'vendor/autoload.php';
 
@@ -15,4 +17,21 @@ $total = collect([
     ['price' => 20],
 ])->sumPrices();
 
-echo $total;
+echo $total . "\n";
+
+class UserData extends Data
+{
+    #[Required]
+    public string $name;
+    
+    public string $email;
+}
+
+try {
+    $user = UserData::fromArray([
+        'email' => 'teste@teste.com',
+        'name' => 'Gabriel'
+    ]);
+} catch ( Exception $e ) {
+    echo $e->getMessage();
+}
