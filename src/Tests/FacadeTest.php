@@ -11,6 +11,7 @@ $app = new Container();
 Facade::setContainer($app);
 
 $mySlug = Str::slug('Teste de sistmea');
-print($mySlug);
+$rad = Str::random(10);
+dd($mySlug, $rad);
 
 
