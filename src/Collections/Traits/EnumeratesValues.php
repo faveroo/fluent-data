@@ -19,6 +19,11 @@ trait EnumeratesValues
         );
     }
 
+    public function contains(mixed $value): bool
+    {
+        return in_array($value, $this->items);
+    }
+
     public function reject(callable $callback): static{
         return $this->filter(
             fn ($item) => !$callback($item)
