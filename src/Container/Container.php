@@ -35,7 +35,7 @@ class Container
 
         if(isset($this->singletons[$abstract])) {
             return $this->instances[$abstract]
-                = $this->resolve(
+                ??= $this->resolve(
                     $this->singletons[$abstract]
                 );
         }
@@ -62,7 +62,7 @@ class Container
         $constructor = $reflection->getConstructor();
 
         if(!$constructor) {
-            return new $concrete;
+            return $reflection->newInstance();
         }
 
         $dependencies = array_map(
@@ -71,7 +71,9 @@ class Container
             $constructor->getParameters()
         );
 
-        return new $concrete(...$dependencies);
+        return $reflection->newInstanceArgs(
+            $dependencies
+        );
     }
 
     protected function resolveDependency(
@@ -80,8 +82,22 @@ class Container
         $type = $parameter->getType();
 
         if(!$type) {
+            if ($parameter->isDefaultValueAvailable()) {
+                return $parameter->getDefaultValue();
+            }
+
             throw new Exception(
                 "Cannot resolve parameter {$parameter->getName()}"
+            );
+        }
+
+        if ($type->isBuiltin()) {
+            if ($parameter->isDefaultValueAvailable()) {
+                return $parameter->getDefaultValue();
+            }
+
+            throw new Exception(
+                "Cannot resolve builtin type {$type->getName()}"
             );
         }
 
