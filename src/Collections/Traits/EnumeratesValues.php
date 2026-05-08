@@ -19,6 +19,23 @@ trait EnumeratesValues
         );
     }
 
+    public function reject(callable $callback): static{
+        return $this->filter(
+            fn ($item) => !$callback($item)
+        );
+    }
+
+    public function reduce(
+        callable $callback,
+        mixed $init = null
+    ): mixed {
+        return array_reduce(
+            $this->items,
+            $callback,
+            $init
+        );
+    }
+
     public function first(): mixed
     {
         return reset($this->items);
@@ -27,5 +44,26 @@ trait EnumeratesValues
     public function last(): mixed
     {
         return end($this->items);
+    }
+
+    public function each(callable $callback): static
+    {
+        foreach ($this->items as $key => $items)
+            {
+                $callback($items, $key);
+            }
+
+        return $this;
+        
+    }
+
+    public function pluck(string $key): static
+    {
+        return new static(
+            array_map(
+                fn($item) => $item[$key] ?? null,
+                $this->items
+            )
+        );
     }
 }

@@ -18,16 +18,6 @@ class Collection extends Fluent implements Arrayable
         $this->items = $items;
     }
 
-    public function each(callable $callback): static
-    {
-        foreach ($this->items as $key => $items)
-            {
-                $callback($items, $key);
-            }
-
-        return $this;
-        
-    }
 
     public function toArray(): array
     {
