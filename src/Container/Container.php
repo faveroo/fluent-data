@@ -65,13 +65,13 @@ class Container
             return new $concrete;
         }
 
-        $dependecies = array_map(
+        $dependencies = array_map(
             fn (ReflectionParameter $param) =>
                 $this->resolveDependency($param),
             $constructor->getParameters()
         );
 
-        return new $concrete(...$dependecies);
+        return new $concrete(...$dependencies);
     }
 
     protected function resolveDependency(
