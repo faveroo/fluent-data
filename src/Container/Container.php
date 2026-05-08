@@ -10,7 +10,7 @@ use ReflectionParameter;
 class Container
 {
     protected array $bindings = [];
-
+    protected array $singletons = [];
     protected array $instances = [];
 
     public function bind(
@@ -24,7 +24,7 @@ class Container
         string $abstract,
         Closure|string $concrete
     ): void {
-        $this->instances[$abstract] = $this->resolve($concrete);
+        $this->singletons[$abstract] = $concrete;
     }
 
     public function make(string $abstract): mixed 
@@ -33,7 +33,15 @@ class Container
             return $this->instances[$abstract];
         }
 
-        $concrete = $this->bindings[$abstract] ?? $abstract;
+        if(isset($this->singletons[$abstract])) {
+            return $this->instances[$abstract]
+                = $this->resolve(
+                    $this->singletons[$abstract]
+                );
+        }
+
+        $concrete = $this->bindings[$abstract] 
+            ?? $abstract;
 
         return $this->resolve($concrete);
     }
