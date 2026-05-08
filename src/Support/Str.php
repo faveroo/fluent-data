@@ -4,14 +4,14 @@ namespace Gabriel\FluentData\Support;
 
 class Str
 {
-    public static function slug(string $value): string
+    public function slug(string $value): string
     {
         return strtolower(
             str_replace(' ', '-', trim($value))
         );
     }
 
-    public static function studly(string $value): string
+    public function studly(string $value): string
     {
         $value = str_replace(
             ['-', '_'],
@@ -24,14 +24,14 @@ class Str
         return str_replace(' ', '', $value);
     }
 
-    public static function camel(string $value): string
+    public function camel(string $value): string
     {
         return lcfirst(
             static::studly($value)
         );
     }
 
-    public static function snake(string $value): string
+    public function snake(string $value): string
     {
         return strtolower(
             preg_replace(
@@ -42,7 +42,7 @@ class Str
         );
     }
 
-    public static function startsWith(
+    public function startsWith(
         string $haystack,
         string $needle
     ): bool {
@@ -52,7 +52,7 @@ class Str
         );
     }
 
-    public static function endsWith(
+    public function endsWith(
         string $haystack,
         string $needle
     ): bool {
@@ -62,10 +62,22 @@ class Str
         );
     }
 
-    public static function contains(
+    public function contains(
         string $haystack,
         string $needle
     ): bool {
         return str_contains($haystack, $needle);
+    }
+
+    public function random(
+        int $length
+    ): string {
+        return substr(
+            str_shuffle(
+                'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+            ),
+            0,
+            $length
+        );
     }
 }
