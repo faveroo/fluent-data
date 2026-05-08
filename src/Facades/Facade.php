@@ -6,6 +6,8 @@ use Gabriel\FluentData\Container\Container;
 
 abstract class Facade
 {
+    protected static array $resolvedInstances = [];
+
     protected static Container $container;
 
     public static function setContainer(
@@ -16,9 +18,16 @@ abstract class Facade
 
     protected static function resolveInstance(): mixed
     {
-        return static::$container->make(
-            static::getFacadeAccessor()
-        );
+        $accessor = static::getFacadeAccessor();
+
+        if (
+            isset(static::$resolvedInstances[$accessor])
+        ) {
+            return static::$resolvedInstances[$accessor];
+        }
+
+        return static::$resolvedInstances[$accessor]
+        = static::$container->make($accessor);
     }
 
     abstract protected static function getFacadeAccessor(): string;
