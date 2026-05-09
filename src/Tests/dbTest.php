@@ -7,17 +7,19 @@ use Gabriel\FluentData\Facades\DB;
 
 require 'vendor/autoload.php';
 
+load_env(__DIR__ . '/../.env');
+
 $app = new Container();
 
 Facade::setContainer($app);
 
-$app->singleton(Database::class, fn() => new Database([
-    'driver' => 'mysql',
-    'host' => 'localhost',
-    'database' => 'fluent_data_test',
-    'username' => 'root',
-    'password' => '',
-]));
+$config = require __DIR__ . '/../config/database.php';
+
+$connection = $config['default'];
+
+$app->singleton(Database::class, fn() => new Database(
+    $config['connections'][$connection]
+));
 
 $users = DB::table('users')
     ->where('active', 1)
