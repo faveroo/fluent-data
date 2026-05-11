@@ -74,8 +74,9 @@ class Collection extends Fluent implements
         return $this->items;
     }
 
-    public function toJson(): string
+    public function toJson(int $flags = JSON_PRETTY_PRINT): string
     {
-        return json_encode($this->items, JSON_PRETTY_PRINT);
+        header('Content-Type: application/json');
+        return json_encode($this->toArray(), $flags);
     }
 }
