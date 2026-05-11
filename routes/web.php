@@ -2,10 +2,11 @@
 
 // php -S localhost:8000 -t public
 
+use Gabriel\FluentData\Facades\DB;
 use Gabriel\FluentData\Facades\Route;
 
 Route::get('/', function () {
-    return 'Home';
+    return DB::table('users')->get();
 });
 
 Route::get('/users', function () {

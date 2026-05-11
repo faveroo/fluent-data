@@ -15,6 +15,7 @@ Facade::setContainer($app);
 
 $config = require __DIR__ . '/../config/database.php';
 
+
 $connection = $config['default'];
 
 $app->singleton(Database::class, fn() => new Database(

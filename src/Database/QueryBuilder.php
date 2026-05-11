@@ -26,7 +26,6 @@ class QueryBuilder
     public function get()
     {
         [$sql, $bindings] = $this->toSql();
-
         return $this->database->select($sql, $bindings);
     }
 

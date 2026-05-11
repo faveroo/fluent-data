@@ -12,12 +12,11 @@ class Database
     public function __construct(array $config)
     {
         $dsn = sprintf(
-            '%s:host=%s;port=%s;dbname=%s;charset=%s',
+            '%s:host=%s;port=%s;dbname=%s',
             $config['driver'] ?? 'mysql',
             $config['host'],
             $config['port'] ?? '3306',
             $config['database'],
-            $config['charset'] ?? 'utf8mb4',
         );
 
         $this->pdo = new PDO(

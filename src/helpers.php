@@ -66,6 +66,7 @@ if(!function_exists('load_env')) {
 
             [$key, $value] = array_pad(explode('=', $line, 2), 2, '');
 
+
             $key = trim($key);
             $value = trim($value);
 
