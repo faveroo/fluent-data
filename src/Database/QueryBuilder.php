@@ -2,6 +2,8 @@
 
 namespace Gabriel\FluentData\Database;
 
+use Gabriel\FluentData\Collections\Collection;
+
 class QueryBuilder
 {
     protected array $wheres = [];
@@ -23,7 +25,7 @@ class QueryBuilder
         return $this;
     }
 
-    public function get()
+    public function get(): Collection
     {
         [$sql, $bindings] = $this->toSql();
         return $this->database->select($sql, $bindings);

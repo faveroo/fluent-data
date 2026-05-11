@@ -6,7 +6,7 @@ use Gabriel\FluentData\Facades\DB;
 use Gabriel\FluentData\Facades\Route;
 
 Route::get('/', function () {
-    return DB::table('users')->get();
+    return DB::table('users')->get()->toJson();
 });
 
 Route::get('/users', function () {
