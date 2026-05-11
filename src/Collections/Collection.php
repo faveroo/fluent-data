@@ -11,7 +11,6 @@ use Gabriel\FluentData\Collections\Traits\EnumeratesValues;
 use Gabriel\FluentData\Collections\Traits\Macroable;
 use Gabriel\FluentData\Contracts\Arrayable;
 use Gabriel\FluentData\Contracts\Jsonable;
-use Gabriel\FluentData\DTO\Data\Data;
 use Gabriel\FluentData\Support\Fluent;
 use JsonSerializable;
 use Traversable;
@@ -21,7 +20,8 @@ class Collection extends Fluent implements
     ArrayAccess,
     Countable,
     IteratorAggregate,
-    JsonSerializable
+    JsonSerializable,
+    Jsonable
 {
     use Macroable, EnumeratesValues;
 
@@ -62,6 +62,11 @@ class Collection extends Fluent implements
 
     public function offsetSet($offset, $value): void
     {
+        if ($offset === null) {
+            $this->items[] = $value;
+            return;
+        }
+
         $this->items[$offset] = $value;
     }
 
@@ -70,11 +75,20 @@ class Collection extends Fluent implements
         unset($this->items[$offset]);
     }
 
+    public function all(): array
+    {
+        return $this->items;
+    }
+
     public function toArray(): array
     {
         return array_map(function ($item) {
-            if ($item instanceof Data) {
+            if ($item instanceof Arrayable) {
                 return $item->toArray();
+            }
+
+            if ($item instanceof JsonSerializable) {
+                return $item->jsonSerialize();
             }
 
             return $item;

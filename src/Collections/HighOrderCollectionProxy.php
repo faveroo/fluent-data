@@ -12,7 +12,9 @@ class HighOrderCollectionProxy
     public function __get(string $prop): Collection
     {
         return $this->collection->{$this->method}(
-            fn ($item) => $item->$prop
+            fn ($item) => is_array($item)
+                ? ($item[$prop] ?? null)
+                : ($item->{$prop} ?? null)
         );
     }
 }

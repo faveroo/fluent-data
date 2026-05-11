@@ -4,14 +4,14 @@ namespace Gabriel\FluentData\Support;
 
 class Str
 {
-    public function slug(string $value): string
+    public static function slug(string $value): string
     {
         return strtolower(
-            str_replace(' ', '-', trim($value))
+            preg_replace('/[^a-zA-Z0-9]+/', '-', trim($value))
         );
     }
 
-    public function studly(string $value): string
+    public static function studly(string $value): string
     {
         $value = str_replace(
             ['-', '_'],
@@ -19,19 +19,21 @@ class Str
             $value
         );
 
-        $value = ucwords($value);
-
-        return str_replace(' ', '', $value);
+        return str_replace(
+            ' ',
+            '',
+            ucwords($value)
+        );
     }
 
-    public function camel(string $value): string
+    public static function camel(string $value): string
     {
         return lcfirst(
             static::studly($value)
         );
     }
 
-    public function snake(string $value): string
+    public static function snake(string $value): string
     {
         return strtolower(
             preg_replace(
@@ -42,7 +44,7 @@ class Str
         );
     }
 
-    public function startsWith(
+    public static function startsWith(
         string $haystack,
         string $needle
     ): bool {
@@ -52,7 +54,7 @@ class Str
         );
     }
 
-    public function endsWith(
+    public static function endsWith(
         string $haystack,
         string $needle
     ): bool {
@@ -62,22 +64,24 @@ class Str
         );
     }
 
-    public function contains(
+    public static function contains(
         string $haystack,
         string $needle
     ): bool {
         return str_contains($haystack, $needle);
     }
 
-    public function random(
-        int $length
+    public static function random(
+        int $length = 16
     ): string {
-        return substr(
-            str_shuffle(
-                'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-            ),
-            0,
-            $length
-        );
+        $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $maxIndex = strlen($alphabet) - 1;
+        $random = '';
+
+        for ($index = 0; $index < $length; $index++) {
+            $random .= $alphabet[random_int(0, $maxIndex)];
+        }
+
+        return $random;
     }
 }

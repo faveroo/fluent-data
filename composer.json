@@ -1,7 +1,7 @@
 {
     "name": "gabriel.hoffmann/fluent-data",
-    "description": "Fluent Utility package for PHP",
-    "type": "project",
+    "description": "Data-focused utility helpers for PHP collections, DTOs and pipelines",
+    "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
