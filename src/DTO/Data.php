@@ -3,6 +3,7 @@
 namespace Gabriel\FluentData\DTO;
 
 use Exception;
+use Gabriel\FluentData\DTO\Attributes\Email;
 use ReflectionClass;
 use ReflectionProperty;
 use Gabriel\FluentData\DTO\Attributes\Required;
@@ -16,7 +17,7 @@ abstract class Data
         $reflection = new ReflectionClass($instance);
 
         foreach($reflection->getProperties() as $property) {
-            static::validateRequired($property, $data);
+            static::validate($property, $data);
             
             $name = $property->getName();
 
@@ -28,11 +29,12 @@ abstract class Data
         return $instance;
     }
 
-    public static function validateRequired(
+    public static function validate(
         ReflectionProperty $property,
         array $data
     ): void {
         $required = $property->getAttributes(Required::class);
+        $email = $property->getAttributes(Email::class);
 
         if($required && !array_key_exists(
             $property->getName(),
@@ -40,6 +42,18 @@ abstract class Data
         )) {
             throw new Exception(
                 "{$property->getName()} is required"
+            );
+        }
+
+        if($email && array_key_exists(
+            $property->getName(),
+            $data
+        ) && !filter_var(
+            $data[$property->getName()],
+            FILTER_VALIDATE_EMAIL
+        )) {
+            throw new Exception(
+                "{$property->getName()} must be a valid email"
             );
         }
     }
