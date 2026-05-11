@@ -11,8 +11,9 @@ use Gabriel\FluentData\Collections\Traits\EnumeratesValues;
 use Gabriel\FluentData\Collections\Traits\Macroable;
 use Gabriel\FluentData\Contracts\Arrayable;
 use Gabriel\FluentData\Contracts\Jsonable;
+use Gabriel\FluentData\DTO\Data\Data;
 use Gabriel\FluentData\Support\Fluent;
-use Override;
+use JsonSerializable;
 use Traversable;
 
 class Collection extends Fluent implements
@@ -20,7 +21,7 @@ class Collection extends Fluent implements
     ArrayAccess,
     Countable,
     IteratorAggregate,
-    Jsonable
+    JsonSerializable
 {
     use Macroable, EnumeratesValues;
 
@@ -71,12 +72,27 @@ class Collection extends Fluent implements
 
     public function toArray(): array
     {
-        return $this->items;
+        return array_map(function ($item) {
+            if ($item instanceof Data) {
+                return $item->toArray();
+            }
+
+            return $item;
+        }, $this->items);
     }
 
-    public function toJson(int $flags = JSON_PRETTY_PRINT): string
+    public function jsonSerialize(): mixed
     {
-        header('Content-Type: application/json');
-        return json_encode($this->toArray(), $flags);
+        return $this->toArray();
     }
+
+    public function toJson(
+        int $options = JSON_PRETTY_PRINT
+    ): string {
+        return json_encode(
+            $this->jsonSerialize(),
+            $options
+        );
+    }
+
 }

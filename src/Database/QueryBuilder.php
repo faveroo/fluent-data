@@ -28,12 +28,17 @@ class QueryBuilder
     public function get(): Collection
     {
         [$sql, $bindings] = $this->toSql();
-        return $this->database->select($sql, $bindings);
+
+        return Collection::make(
+            $this->database->select($sql, $bindings)
+        );
     }
 
     public function first(): ?array
     {
-        return $this->get()->first() ?: null;
+        $result = $this->get()->first();
+
+        return is_array($result) ? $result : null;
     }
 
     public function insert(array $data): bool

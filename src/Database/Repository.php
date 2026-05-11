@@ -2,6 +2,8 @@
 
 namespace Gabriel\FluentData\Database;
 
+use Gabriel\FluentData\Collections\Collection;
+
 abstract class Repository
 {
     protected string $table;
@@ -15,7 +17,7 @@ abstract class Repository
         return $this->database->table($this->table);
     }
 
-    public function all()
+    public function all(): Collection
     {
         return $this->query()->get();
     }

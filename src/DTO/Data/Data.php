@@ -1,15 +1,20 @@
 <?php
 
-namespace Gabriel\FluentData\DTO;
+namespace Gabriel\FluentData\DTO\Data;
 
 use Exception;
 use Gabriel\FluentData\DTO\Attributes\Email;
 use ReflectionClass;
 use ReflectionProperty;
 use Gabriel\FluentData\DTO\Attributes\Required;
+use JsonSerializable;
 
-abstract class Data
+abstract class Data implements JsonSerializable
 {
+    protected array $masked = [];
+
+    protected array $show = [];
+
     public static function fromArray(array $data): static
     {
         $instance = new static;
@@ -56,5 +61,59 @@ abstract class Data
                 "{$property->getName()} must be a valid email"
             );
         }
+    }
+
+    public function masked(array $fields): static
+    {
+        $this->masked = $fields;
+
+        return $this;
+    }
+
+    public function show(array $fields): static
+    {
+        $this->show = $fields;
+
+        return $this;
+    }
+
+    public function toArray(): array
+    {
+        $attributes = get_object_vars($this);
+
+        unset(
+            $attributes['masked'],
+            $attributes['show']
+        );
+
+        if (!empty($this->show)) {
+            $attributes = array_intersect_key(
+                $attributes,
+                array_flip($this->show)
+            );
+        }
+
+        if (!empty($this->masked)) {
+            $attributes = array_diff_key(
+                $attributes,
+                array_flip($this->masked)
+            );
+        }
+
+        return $attributes;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->toArray();
+    }
+
+    public function toJson(
+        int $options = JSON_PRETTY_PRINT
+    ): string {
+        return json_encode(
+            $this->jsonSerialize(),
+            $options
+        );
     }
 }

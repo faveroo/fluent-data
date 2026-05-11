@@ -43,6 +43,10 @@ trait EnumeratesValues
 
     public function first(): mixed
     {
+        if ($this->items === []) {
+            return null;
+        }
+
         return reset($this->items);
     }
 

@@ -2,7 +2,6 @@
 
 namespace Gabriel\FluentData\Database;
 
-use Gabriel\FluentData\Collections\Collection;
 use PDO;
 
 class Database
@@ -55,11 +54,11 @@ class Database
         return $statement->rowCount();
     }
 
-    public function select(string $sql, array $params = []): Collection
+    public function select(string $sql, array $params = []): array
     {
         $statement = $this->pdo->prepare($sql);
         $statement->execute($params);
 
-        return collect($statement->fetchAll());
+        return $statement->fetchAll();
     }
 }
