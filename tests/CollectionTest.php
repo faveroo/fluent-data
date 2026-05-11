@@ -45,16 +45,14 @@ class CollectionTest extends TestCase
 
     public function test_collection_fist_and_last_function(): void
     {
-        $first = Collection::make($this->items)->first();
-        $end = Collection::make($this->items)->last();
+        $collection = collect([1, 10, 20, 30, 40, 50, 66, 70]);
+        $first = $collection->first();
+        $last = $collection->last();
 
-        $result = [$first, $end];
+        $result = [$first, $last];
 
         $this->assertSame(
-            [
-                ['name' => 'Abacate', 'price' => 10],
-                ['name' => 'Manga', 'price' => 20],
-            ],
+            [1, 70],
             $result
         );
     }
