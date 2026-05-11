@@ -1,4 +1,4 @@
 vendor/
 composer.lock
-tests/
 TODO.md
+.phpunit.result.cache
