@@ -92,6 +92,8 @@ $result = Pipeline::make(['name' => '  ana  '])
 
 - `Gabriel\FluentData\Support\Arr`
 - `Gabriel\FluentData\Support\Str`
+- `Gabriel\FluentData\Facades\Arr`
+- `Gabriel\FluentData\Facades\Str`
 - global helpers `collect()`, `dd()`, `tap()` and `value()`
 
 ## Scope

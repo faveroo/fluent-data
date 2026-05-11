@@ -4,7 +4,7 @@ namespace Gabriel\FluentData\Support;
 
 class Arr
 {
-    public static function first(
+    public function first(
         array $items,
         ?callable $callback = null,
         mixed $default = null
@@ -24,7 +24,7 @@ class Arr
         return value($default);
     }
 
-    public static function last(
+    public function last(
         array $items,
         ?callable $callback = null,
         mixed $default = null
@@ -35,28 +35,28 @@ class Arr
                 : end($items);
         }
 
-        return static::first(
+        return $this->first(
             array_reverse($items, true),
             $callback,
             $default
         );
     }
 
-    public static function contains(
+    public function contains(
         array $items,
         mixed $value
     ): bool {
         return in_array($value, $items, true);
     }
 
-    public static function filter(
+    public function filter(
         array $items,
         callable $callback
     ): array {
         return array_filter($items, $callback, ARRAY_FILTER_USE_BOTH);
     }
 
-    public static function pluck(
+    public function pluck(
         array $items,
         string $key
     ): array {
