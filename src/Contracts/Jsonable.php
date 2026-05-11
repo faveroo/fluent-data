@@ -2,7 +2,7 @@
 
 namespace Gabriel\FluentData\Contracts;
 
-interface Jsonable 
+interface Jsonable
 {
     public function toJson(): string;
 }

@@ -7,7 +7,8 @@ class HighOrderCollectionProxy
     public function __construct(
         protected Collection $collection,
         protected string $method
-    ) {}
+    ) {
+    }
 
     public function __get(string $prop): Collection
     {

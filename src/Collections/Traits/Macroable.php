@@ -2,8 +2,8 @@
 
 namespace Gabriel\FluentData\Collections\Traits;
 
-use Closure;
 use BadMethodCallException;
+use Closure;
 
 trait Macroable
 {

@@ -5,13 +5,12 @@ namespace Gabriel\FluentData\Collections;
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
-use IteratorAggregate;
-
 use Gabriel\FluentData\Collections\Traits\EnumeratesValues;
 use Gabriel\FluentData\Collections\Traits\Macroable;
 use Gabriel\FluentData\Contracts\Arrayable;
 use Gabriel\FluentData\Contracts\Jsonable;
 use Gabriel\FluentData\Support\Fluent;
+use IteratorAggregate;
 use JsonSerializable;
 use Traversable;
 
@@ -23,7 +22,8 @@ class Collection extends Fluent implements
     JsonSerializable,
     Jsonable
 {
-    use Macroable, EnumeratesValues;
+    use Macroable;
+    use EnumeratesValues;
 
     protected array $items = [];
 

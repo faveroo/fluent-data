@@ -3,7 +3,6 @@
 namespace Gabriel\FluentData\Facades;
 
 use BadMethodCallException;
-use ReflectionClass;
 
 abstract class Facade
 {

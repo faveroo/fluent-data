@@ -6,5 +6,5 @@ use Attribute;
 
 #[Attribute]
 class Email
-{    
+{
 }

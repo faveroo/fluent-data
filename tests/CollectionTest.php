@@ -12,7 +12,7 @@ class CollectionTest extends TestCase
 
     public function test_collection_macros(): void
     {
-        Collection::macro('sumPrices', function() {
+        Collection::macro('sumPrices', function () {
             return array_sum(
                 array_column($this->items, 'price')
             );
@@ -22,7 +22,7 @@ class CollectionTest extends TestCase
 
         $this->assertSame(
             30,
-            $result,   
+            $result,
         );
     }
 

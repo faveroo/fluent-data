@@ -31,7 +31,7 @@ class Pipeline
             array_reverse($this->pipes),
             fn ($stack, $pipe) =>
                 fn ($passable) =>
-                    (new $pipe)->handle($passable, $stack),
+                    (new $pipe())->handle($passable, $stack),
             $destination
         );
 

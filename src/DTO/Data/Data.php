@@ -19,7 +19,7 @@ abstract class Data implements Arrayable, Jsonable, JsonSerializable
 
     public static function fromArray(array $data): static
     {
-        $instance = new static;
+        $instance = new static();
         $reflection = new ReflectionClass($instance);
 
         foreach ($reflection->getProperties() as $property) {
