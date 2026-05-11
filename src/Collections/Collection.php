@@ -10,15 +10,17 @@ use IteratorAggregate;
 use Gabriel\FluentData\Collections\Traits\EnumeratesValues;
 use Gabriel\FluentData\Collections\Traits\Macroable;
 use Gabriel\FluentData\Contracts\Arrayable;
+use Gabriel\FluentData\Contracts\Jsonable;
 use Gabriel\FluentData\Support\Fluent;
 use Override;
 use Traversable;
 
-class Collection extends Fluent implements 
+class Collection extends Fluent implements
     Arrayable,
     ArrayAccess,
     Countable,
-    IteratorAggregate
+    IteratorAggregate,
+    Jsonable
 {
     use Macroable, EnumeratesValues;
 
@@ -70,5 +72,10 @@ class Collection extends Fluent implements
     public function toArray(): array
     {
         return $this->items;
+    }
+
+    public function toJson(): string
+    {
+        return json_encode($this->items, JSON_PRETTY_PRINT);
     }
 }
