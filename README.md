@@ -98,4 +98,4 @@ $result = Pipeline::make(['name' => '  ana  '])
 
 ## Scope
 
-This package intentionally stays focused on data utilities. It does not include router, controller, container, facade or database abstractions.
+This package intentionally stays focused on data utilities. It does not include router, controller, container, or database abstractions.
