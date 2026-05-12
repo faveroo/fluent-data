@@ -2,9 +2,11 @@
 
 namespace Gabriel\FluentData\Pipeline\Pipes;
 
-class UpperName
+use Gabriel\FluentData\Contracts\Pipe;
+
+class UpperName implements Pipe
 {
-    public function handle(array $payload, callable $next): mixed
+    public function handle(mixed $payload, callable $next): mixed
     {
         $payload['name'] = strtoupper($payload['name']);
 

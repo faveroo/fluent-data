@@ -2,9 +2,11 @@
 
 namespace Gabriel\FluentData\Pipeline\Pipes;
 
-class TrimName
+use Gabriel\FluentData\Contracts\Pipe;
+
+class TrimName implements Pipe
 {
-    public function handle(array $payload, callable $next): mixed
+    public function handle(mixed $payload, callable $next): mixed
     {
         $payload['name'] = trim($payload['name']);
 
