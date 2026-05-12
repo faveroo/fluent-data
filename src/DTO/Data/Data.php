@@ -2,14 +2,11 @@
 
 namespace Gabriel\FluentData\DTO\Data;
 
-use Exception;
 use Gabriel\FluentData\Contracts\Arrayable;
 use Gabriel\FluentData\Contracts\Jsonable;
-use Gabriel\FluentData\DTO\Attributes\Email;
-use Gabriel\FluentData\DTO\Attributes\Required;
+use Gabriel\FluentData\Validation\ValidationException;
 use JsonSerializable;
 use ReflectionClass;
-use ReflectionProperty;
 
 abstract class Data implements Arrayable, Jsonable, JsonSerializable
 {
@@ -19,10 +16,14 @@ abstract class Data implements Arrayable, Jsonable, JsonSerializable
 
     public static function fromArray(array $data): static
     {
+        static::validate($data);
+
         $instance = new static();
+
         $reflection = new ReflectionClass($instance);
 
         foreach ($reflection->getProperties() as $property) {
+
             if (
                 $property->isStatic()
                 || in_array(
@@ -34,45 +35,53 @@ abstract class Data implements Arrayable, Jsonable, JsonSerializable
                 continue;
             }
 
-            static::validate($property, $data);
-
             $name = $property->getName();
 
             if (array_key_exists($name, $data)) {
-                $property->setValue($instance, $data[$name]);
+                $property->setValue(
+                    $instance,
+                    $data[$name]
+                );
             }
         }
 
         return $instance;
     }
 
-    public static function validate(
-        ReflectionProperty $property,
-        array $data
-    ): void {
-        $required = $property->getAttributes(Required::class);
-        $email = $property->getAttributes(Email::class);
+    public static function validate(array $data): void
+    {
+        $reflection = new ReflectionClass(static::class);
 
-        if (
-            $required
-            && !array_key_exists($property->getName(), $data)
-        ) {
-            throw new Exception(
-                "{$property->getName()} is required"
-            );
+        $errors = [];
+
+        foreach ($reflection->getProperties() as $property) {
+
+            if ($property->isStatic()) {
+                continue;
+            }
+
+            $field = $property->getName();
+
+            $value = $data[$field] ?? null;
+
+            foreach ($property->getAttributes() as $attribute) {
+
+                $instance = $attribute->newInstance();
+
+                if (! method_exists($instance, 'rule')) {
+                    continue;
+                }
+
+                $rule = $instance->rule();
+
+                if (! $rule->passes($field, $value)) {
+                    $errors[$field][] = $rule->message($field);
+                }
+            }
         }
 
-        if (
-            $email
-            && array_key_exists($property->getName(), $data)
-            && !filter_var(
-                $data[$property->getName()],
-                FILTER_VALIDATE_EMAIL
-            )
-        ) {
-            throw new Exception(
-                "{$property->getName()} must be a valid email"
-            );
+        if (! empty($errors)) {
+            throw new ValidationException($errors);
         }
     }
 
