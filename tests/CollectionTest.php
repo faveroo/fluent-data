@@ -56,4 +56,15 @@ class CollectionTest extends TestCase
             $result
         );
     }
+
+    public function test_collection_count_function(): void
+    {
+        $result = Collection::make($this->items)->count();
+
+        $this->assertSame(
+            2,
+            $result
+        );
+    }
+
 }
