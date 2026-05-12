@@ -13,9 +13,8 @@ trait EnumeratesValues
 
     public function filter(callable $callback): static
     {
-        return new static(
-            array_filter($this->items, $callback)
-        );
+        $new = array_filter($this->items, $callback);
+        return new static(array_values($new));
     }
 
     public function contains(mixed $value): bool
