@@ -35,13 +35,11 @@ class Str
 
     public static function snake(string $value): string
     {
-        return strtolower(
-            preg_replace(
-                '/(.)(?=[A-Z])/u',
-                '$1_',
-                $value
-            )
-        );
+        $value = trim($value); // remove espaço extra
+        $value = preg_replace('/[\s-]+/', '_', $value); // espaço e hífen viram underscore
+        $value = preg_replace('/(.)(?=[A-Z])/u', '$1_', $value); // underscore antes de letras maiúsculas
+        $value = preg_replace('/_+/', '_', $value); // remove underscore duplicados
+        return strtolower($value);
     }
 
     public static function startsWith(
