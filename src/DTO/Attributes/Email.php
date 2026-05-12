@@ -3,10 +3,11 @@
 namespace Gabriel\FluentData\DTO\Attributes;
 
 use Attribute;
+use Gabriel\FluentData\Contracts\Ruler;
 use Gabriel\FluentData\Validation\Rule;
 
 #[Attribute]
-class Email
+class Email implements Ruler
 {
     public function rule(): Rule
     {
