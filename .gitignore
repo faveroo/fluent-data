@@ -2,3 +2,4 @@ vendor/
 composer.lock
 TODO.md
 .phpunit.result.cache
+.php-cs-fixer.cache
