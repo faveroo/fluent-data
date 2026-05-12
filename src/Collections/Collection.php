@@ -4,21 +4,19 @@ namespace Gabriel\FluentData\Collections;
 
 use ArrayAccess;
 use ArrayIterator;
-use Countable;
 use Gabriel\FluentData\Collections\Traits\EnumeratesValues;
 use Gabriel\FluentData\Collections\Traits\Macroable;
 use Gabriel\FluentData\Contracts\Arrayable;
+use Gabriel\FluentData\Contracts\Enumerable;
 use Gabriel\FluentData\Contracts\Jsonable;
 use Gabriel\FluentData\Support\Fluent;
-use IteratorAggregate;
 use JsonSerializable;
 use Traversable;
 
 class Collection extends Fluent implements
     Arrayable,
     ArrayAccess,
-    Countable,
-    IteratorAggregate,
+    Enumerable,
     JsonSerializable,
     Jsonable
 {
@@ -83,12 +81,8 @@ class Collection extends Fluent implements
     public function toArray(): array
     {
         return array_map(function ($item) {
-            if ($item instanceof Arrayable) {
+            if ($item instanceof Arrayable or $item instanceof JsonSerializable) {
                 return $item->toArray();
-            }
-
-            if ($item instanceof JsonSerializable) {
-                return $item->jsonSerialize();
             }
 
             return $item;
