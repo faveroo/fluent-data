@@ -1,6 +1,7 @@
 <?php
 
 use Gabriel\FluentData\DTO\Attributes\Email;
+use Gabriel\FluentData\DTO\Attributes\Max;
 use Gabriel\FluentData\DTO\Attributes\Min;
 use Gabriel\FluentData\Validation\ValidationException;
 use Gabriel\FluentData\DTO\Attributes\Required;
@@ -82,15 +83,26 @@ class DataTest extends TestCase
     }
 
     public function test_it_validates_min_length(): void
-{
-    $this->expectException(
-        ValidationException::class
-    );
+    {
+        $this->expectException(
+            ValidationException::class
+        );
 
-    UserData::fromArray([
-        'name' => 'ab'
-    ]);
-}
+        UserData::fromArray([
+            'name' => 'ab'
+        ]);
+    }
+
+    public function test_it_validates_max_length(): void
+    {
+        $this->expectException(
+            ValidationException::class
+        );
+
+        UserData::fromArray([
+            'name' => 'Teste123456'
+        ]);
+    }
 }
 
 class UserData extends Data
@@ -99,6 +111,7 @@ class UserData extends Data
 
     #[Required]
     #[Min(3)]
+    #[Max(6)]
     protected string $name;
 
     #[Required]
