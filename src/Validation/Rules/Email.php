@@ -8,6 +8,10 @@ class Email implements Rule
 {
     public function passes(string $field, mixed $value): bool
     {
+        if(is_null($value)) {
+            return true;
+        }
+        
         return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;        
     }
 
