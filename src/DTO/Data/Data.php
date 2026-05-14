@@ -5,10 +5,9 @@ namespace Gabriel\FluentData\DTO\Data;
 use Gabriel\FluentData\Contracts\Arrayable;
 use Gabriel\FluentData\Contracts\Jsonable;
 use Gabriel\FluentData\Validation\ValidationException;
-use JsonSerializable;
 use ReflectionClass;
 
-abstract class Data implements Arrayable, Jsonable, JsonSerializable
+abstract class Data implements Arrayable, Jsonable
 {
     protected array $masked = [];
 
@@ -124,16 +123,11 @@ abstract class Data implements Arrayable, Jsonable, JsonSerializable
         return $attributes;
     }
 
-    public function jsonSerialize(): mixed
-    {
-        return $this->toArray();
-    }
-
     public function toJson(
         int $options = JSON_PRETTY_PRINT
     ): string {
         return json_encode(
-            $this->jsonSerialize(),
+            $this->toArray(),
             $options
         );
     }
