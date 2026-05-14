@@ -3,6 +3,7 @@
 use Gabriel\FluentData\DTO\Attributes\Email;
 use Gabriel\FluentData\DTO\Attributes\Max;
 use Gabriel\FluentData\DTO\Attributes\Min;
+use Gabriel\FluentData\DTO\Attributes\StringType;
 use Gabriel\FluentData\Validation\ValidationException;
 use Gabriel\FluentData\DTO\Attributes\Required;
 use Gabriel\FluentData\DTO\Data\Data;
@@ -100,7 +101,21 @@ class DataTest extends TestCase
         );
 
         UserData::fromArray([
-            'name' => 'Teste123456'
+            'name' => 'Teste123456',
+            'email' => 'email@email.com'
+        ]);
+    }
+
+    public function test_it_validates_stringType(): void
+    {
+        $this->expectException(
+            ValidationException::class
+        );
+
+        UserData::fromArray([
+            'name' => 'Name',
+            'email' => 'email@email.com',
+            'uuid' => 1231231231231
         ]);
     }
 }
@@ -119,4 +134,7 @@ class UserData extends Data
     protected string $email;
 
     protected string $password;
+
+    #[StringType]
+    protected mixed $uuid;
 }
