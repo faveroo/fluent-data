@@ -1,6 +1,7 @@
 <?php
 
 use Gabriel\FluentData\DTO\Attributes\Email;
+use Gabriel\FluentData\DTO\Attributes\IntType;
 use Gabriel\FluentData\DTO\Attributes\Max;
 use Gabriel\FluentData\DTO\Attributes\Min;
 use Gabriel\FluentData\DTO\Attributes\StringType;
@@ -118,6 +119,20 @@ class DataTest extends TestCase
             'uuid' => 1231231231231
         ]);
     }
+
+    public function test_it_validates_intType(): void
+    {
+        $this->expectException(
+            ValidationException::class
+        );
+
+        UserData::fromArray([
+            'name' => 'Name',
+            'email' => 'email@email.com',
+            'uuid' => 1231231231231,
+            'age' => "daikdawdaw"
+        ]);
+    }
 }
 
 class UserData extends Data
@@ -134,6 +149,9 @@ class UserData extends Data
     protected string $email;
 
     protected string $password;
+
+    #[IntType]
+    protected mixed $age;
 
     #[StringType]
     protected mixed $uuid;
