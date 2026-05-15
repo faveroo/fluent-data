@@ -1,5 +1,6 @@
 <?php
 
+use Gabriel\FluentData\DTO\Attributes\ArrayString;
 use Gabriel\FluentData\DTO\Attributes\Email;
 use Gabriel\FluentData\DTO\Attributes\IntType;
 use Gabriel\FluentData\DTO\Attributes\Max;
@@ -133,6 +134,24 @@ class DataTest extends TestCase
             'age' => "daikdawdaw"
         ]);
     }
+
+    public function test_it_validates_ArrayString(): void
+    {
+        $this->expectException(
+            ValidationException::class
+        );
+
+        UserData::fromArray([
+            'name' => 'Name',
+            'email' => 'email@email.com',
+            'uuid' => "1231231231231",
+            'age' => 12,
+            'config' => [
+                'teste' => 1231
+            ]
+        ]);
+
+    }
 }
 
 class UserData extends Data
@@ -155,4 +174,7 @@ class UserData extends Data
 
     #[StringType]
     protected mixed $uuid;
+
+    #[ArrayString]
+    protected array $config;
 }
