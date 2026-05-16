@@ -1,6 +1,7 @@
 <?php
 
 use Gabriel\FluentData\DTO\Attributes\ArrayString;
+use Gabriel\FluentData\DTO\Attributes\ArrayType;
 use Gabriel\FluentData\DTO\Attributes\Email;
 use Gabriel\FluentData\DTO\Attributes\IntType;
 use Gabriel\FluentData\DTO\Attributes\Max;
@@ -147,7 +148,7 @@ class DataTest extends TestCase
             'uuid' => "1231231231231",
             'age' => 12,
             'config' => [
-                'teste' => 1231
+                'teste' => "1231"
             ]
         ]);
 
@@ -175,6 +176,6 @@ class UserData extends Data
     #[StringType]
     protected mixed $uuid;
 
-    #[ArrayString]
+    #[ArrayType('int')]
     protected array $config;
 }
