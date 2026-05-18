@@ -137,4 +137,26 @@ trait EnumeratesValues
 
         return null;
     }
+
+    public function sum(
+        string|callable|null $callback = null
+    ): int|float
+    {
+        if ($callback === null) {
+            return array_sum($this->items);
+        }
+
+        return array_reduce(
+            $this->items,
+            function ($carry, $item) use ($callback) {
+
+                $value = is_callable($callback)
+                    ? $callback($item)
+                    : $item[$callback];
+
+                return $carry + $value;
+            },
+            0
+        );
+    }
 }
