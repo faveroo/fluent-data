@@ -4,14 +4,14 @@ namespace Gabriel\FluentData\Support;
 
 class Str
 {
-    public static function slug(string $value): string
+    public function slug(string $value): string
     {
         return strtolower(
             preg_replace('/[^a-zA-Z0-9]+/', '-', trim($value))
         );
     }
 
-    public static function studly(string $value): string
+    public function studly(string $value): string
     {
         $value = str_replace(
             ['-', '_'],
@@ -26,14 +26,14 @@ class Str
         );
     }
 
-    public static function camel(string $value): string
+    public function camel(string $value): string
     {
         return lcfirst(
             static::studly($value)
         );
     }
 
-    public static function snake(string $value): string
+    public function snake(string $value): string
     {
         $value = trim($value); // remove espaço extra
         $value = preg_replace('/[\s-]+/', '_', $value); // espaço e hífen viram underscore
@@ -42,7 +42,7 @@ class Str
         return strtolower($value);
     }
 
-    public static function startsWith(
+    public function startsWith(
         string $haystack,
         string $needle
     ): bool {
@@ -52,7 +52,7 @@ class Str
         );
     }
 
-    public static function endsWith(
+    public function endsWith(
         string $haystack,
         string $needle
     ): bool {
@@ -62,14 +62,14 @@ class Str
         );
     }
 
-    public static function contains(
+    public function contains(
         string $haystack,
         string $needle
     ): bool {
         return str_contains($haystack, $needle);
     }
 
-    public static function random(
+    public function random(
         int $length = 16
     ): string {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -82,4 +82,11 @@ class Str
 
         return $random;
     }
+
+    public function ascii(
+        string $str 
+    ): array
+    {
+        return array_values(unpack("C*", $str));
+    } 
 }

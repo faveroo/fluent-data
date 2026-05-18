@@ -74,4 +74,14 @@ class FacadeTest extends TestCase
             $result
         );
     }
+
+    public function tests_str_ascii_function(): void
+    {
+        $result = Str::ascii('teste');
+
+        $this->assertSame(
+            [116, 101, 115, 116, 101],
+            $result
+        );
+    }
 }
