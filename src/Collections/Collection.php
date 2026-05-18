@@ -80,13 +80,10 @@ class Collection extends Fluent implements
 
     public function toArray(): array
     {
-        return array_map(function ($item) {
-            if ($item instanceof Arrayable or $item instanceof JsonSerializable) {
-                return $item->toArray();
-            }
-
-            return $item;
-        }, $this->items);
+        return array_map(
+            fn (mixed $item) => $this->normalizeItem($item),
+            $this->items
+        );
     }
 
     public function jsonSerialize(): mixed
@@ -101,6 +98,28 @@ class Collection extends Fluent implements
             $this->jsonSerialize(),
             $options
         );
+    }
+
+    protected function normalizeItem(mixed $item): mixed
+    {
+        if ($item instanceof Arrayable) {
+            return $item->toArray();
+        }
+
+        if ($item instanceof JsonSerializable) {
+            return $this->normalizeItem(
+                $item->jsonSerialize()
+            );
+        }
+
+        if (is_array($item)) {
+            return array_map(
+                fn (mixed $value) => $this->normalizeItem($value),
+                $item
+            );
+        }
+
+        return $item;
     }
 
 }
