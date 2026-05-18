@@ -218,37 +218,37 @@ class CollectionTest extends TestCase
         $this->assertNull($result);
     }
 
-    // public function test_collection_sum_returns_total_of_numeric_values(): void
-    // {
-    //     $result = Collection::make($this->items)
-    //         ->sum('price');
+    public function test_collection_sum_returns_total_of_numeric_values(): void
+    {
+        $result = Collection::make($this->items)
+            ->sum('price');
 
-    //     $this->assertSame(30, $result);
-    // }
+        $this->assertSame(30, $result);
+    }
 
-    // public function test_collection_sum_returns_zero_for_empty_collection(): void
-    // {
-    //     $result = collect([])
-    //         ->sum();
+    public function test_collection_sum_returns_zero_for_empty_collection(): void
+    {
+        $result = collect([])
+            ->sum();
 
-    //     $this->assertSame(0, $result);
-    // }
+        $this->assertSame(0, $result);
+    }
 
-    // public function test_collection_avg_returns_average_of_numeric_values(): void
-    // {
-    //     $result = Collection::make($this->items)
-    //         ->avg('price');
+    public function test_collection_avg_returns_average_of_numeric_values(): void
+    {
+        $result = Collection::make($this->items)
+            ->avg('price');
 
-    //     $this->assertSame(15.0, $result);
-    // }
+        $this->assertSame(15.0, $result);
+    }
 
-    // public function test_collection_avg_returns_null_for_empty_collection(): void
-    // {
-    //     $result = collect([])
-    //         ->avg();
+    public function test_collection_avg_returns_null_for_empty_collection(): void
+    {
+        $result = collect([])
+            ->avg();
 
-    //     $this->assertNull($result);
-    // }
+        $this->assertNull($result);
+    }
 
 }
 
