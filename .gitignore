@@ -1,5 +1,4 @@
 vendor/
-composer.lock
 TODO.md
 ROADMAP.md
 .phpunit.result.cache
