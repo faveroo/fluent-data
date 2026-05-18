@@ -159,4 +159,15 @@ trait EnumeratesValues
             0
         );
     }
+
+    public function avg(
+        string|callable|null $callback = null
+    ): int|float|null {
+
+        if(empty($this->items)) {
+            return 0;
+        }
+
+        return $this->sum($callback) / count($this->items);
+    }
 }
