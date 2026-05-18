@@ -162,12 +162,12 @@ trait EnumeratesValues
 
     public function avg(
         string|callable|null $callback = null
-    ): int|float|null {
+    ): float|null {
 
         if(empty($this->items)) {
-            return 0;
+            return null;
         }
 
-        return $this->sum($callback) / count($this->items);
+        return (float) $this->sum($callback) / count($this->items);
     }
 }
