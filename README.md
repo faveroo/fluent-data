@@ -1,5 +1,7 @@
 # Fluent Data
 
+[![CI](https://github.com/faveroo/fluent-data/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/faveroo/fluent-data/actions/workflows/ci.yml)
+
 `fluent-data` is a small PHP utility library focused on data-friendly building blocks:
 
 - collections
