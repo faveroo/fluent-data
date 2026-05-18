@@ -2,6 +2,9 @@
 
 namespace Gabriel\FluentData\Pipeline;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 class Pipeline
 {
     protected mixed $passable;

@@ -60,11 +60,29 @@ class Arr
         array $items,
         string $key
     ): array {
-        return array_map(
-            fn ($item) => is_array($item)
+        $results = [];
+
+        foreach($items as $index => $item) {
+            $value = is_array($item)
                 ? ($item[$key] ?? null)
-                : ($item->{$key} ?? null),
-            $items
-        );
+                : ($item->{$key} ?? null);
+                
+            if($value !== null) {
+                $results[$index] = $value;
+            }
+        }
+
+        return $results;
+    }
+
+    public function only(
+        array $items,
+        array $keys
+    ) : array
+    {
+        return array_intersect_key(
+            $items,
+            array_flip($keys)
+        );  
     }
 }

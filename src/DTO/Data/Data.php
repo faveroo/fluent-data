@@ -7,6 +7,9 @@ use Gabriel\FluentData\Contracts\Jsonable;
 use Gabriel\FluentData\Validation\ValidationException;
 use ReflectionClass;
 
+/**
+ * @phpstan-consistent-constructor
+ */
 abstract class Data implements Arrayable, Jsonable
 {
     protected array $masked = [];
