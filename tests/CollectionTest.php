@@ -1,6 +1,7 @@
 <?php
 
 use Gabriel\FluentData\Collections\Collection;
+use Gabriel\FluentData\Contracts\Arrayable;
 use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase
@@ -79,4 +80,67 @@ class CollectionTest extends TestCase
         
     }
 
+    public function test_collection_to_array_serializes_mixed_values(): void
+    {
+        $collection = Collection::make([
+            new ArrayableValue(['name' => 'Ana']),
+            new JsonValue(['role' => 'admin']),
+            [
+                'meta' => [
+                    new JsonValue(['active' => true]),
+                ],
+            ],
+        ]);
+
+        $this->assertSame(
+            [
+                ['name' => 'Ana'],
+                ['role' => 'admin'],
+                [
+                    'meta' => [
+                        ['active' => true],
+                    ],
+                ],
+            ],
+            $collection->toArray()
+        );
+    }
+
+    public function test_collection_to_array_supports_json_serializable_scalars(): void
+    {
+        $collection = Collection::make([
+            new JsonValue('ok'),
+            new JsonValue(10),
+        ]);
+
+        $this->assertSame(
+            ['ok', 10],
+            $collection->toArray()
+        );
+    }
+
+}
+
+class ArrayableValue implements Arrayable
+{
+    public function __construct(
+        private array $data
+    ) {}
+
+    public function toArray(): array
+    {
+        return $this->data;
+    }
+}
+
+class JsonValue implements \JsonSerializable
+{
+    public function __construct(
+        private mixed $data
+    ) {}
+
+    public function jsonSerialize(): mixed
+    {
+        return $this->data;
+    }
 }
