@@ -88,5 +88,26 @@ class Str
     ): array
     {
         return array_values(unpack("C*", $str));
-    } 
+    }
+
+    public function randomize(
+        string $str
+    ): string
+    {
+        return str_shuffle($str);
+    }
+
+    public function binary(
+        string $str
+    ): string
+    {
+        $chars = str_split($str);
+        $binary = [];
+
+        foreach($chars as $char) {
+            $binary[] = str_pad(decbin(ord($char)), 8, '0', STR_PAD_LEFT);
+        }
+
+        return implode(' ', $binary);
+    }
 }
