@@ -159,6 +159,97 @@ class CollectionTest extends TestCase
         $this->assertTrue($collection->contains(1));
     }
 
+    public function test_collection_where_filters_items_by_key_and_value(): void
+    {
+        $result = Collection::make($this->items)
+            ->where('price', 20)
+            ->all();
+
+        $this->assertSame(
+            [
+                ['name' => 'Manga', 'price' => 20],
+            ],
+            array_values($result)
+        );
+    }
+
+    public function test_collection_where_supports_comparison_operators(): void
+    {
+        $result = Collection::make($this->items)
+            ->where('price', 10, '>')
+            ->all();
+
+        $this->assertSame(
+            [
+                ['name' => 'Manga', 'price' => 20],
+            ],
+            array_values($result)
+        );
+    }
+
+    public function test_collection_where_returns_empty_collection_for_unknown_operator(): void
+    {
+        $result = Collection::make($this->items)
+            ->where('price', 10, '<>')
+            ->all();
+
+        $this->assertSame([], $result);
+    }
+
+    public function test_collection_first_where_returns_first_matching_item(): void
+    {
+        $result = Collection::make([
+            ['name' => 'Banana', 'price' => 5],
+            ['name' => 'Manga', 'price' => 20],
+            ['name' => 'Melancia', 'price' => 20],
+        ])->firstWhere('price', 20);
+
+        $this->assertSame(
+            ['name' => 'Manga', 'price' => 20],
+            $result
+        );
+    }
+
+    public function test_collection_first_where_returns_null_when_nothing_matches(): void
+    {
+        $result = Collection::make($this->items)
+            ->firstWhere('price', 100);
+
+        $this->assertNull($result);
+    }
+
+    // public function test_collection_sum_returns_total_of_numeric_values(): void
+    // {
+    //     $result = Collection::make($this->items)
+    //         ->sum('price');
+
+    //     $this->assertSame(30, $result);
+    // }
+
+    // public function test_collection_sum_returns_zero_for_empty_collection(): void
+    // {
+    //     $result = collect([])
+    //         ->sum();
+
+    //     $this->assertSame(0, $result);
+    // }
+
+    // public function test_collection_avg_returns_average_of_numeric_values(): void
+    // {
+    //     $result = Collection::make($this->items)
+    //         ->avg('price');
+
+    //     $this->assertSame(15.0, $result);
+    // }
+
+    // public function test_collection_avg_returns_null_for_empty_collection(): void
+    // {
+    //     $result = collect([])
+    //         ->avg();
+
+    //     $this->assertNull($result);
+    // }
+
 }
 
 class ArrayableValue implements Arrayable

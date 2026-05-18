@@ -78,4 +78,63 @@ trait EnumeratesValues
             )
         );
     }
+
+    public function where(
+        string $key,
+        mixed $value,
+        string $operator = '='
+    ): static {
+        $operators = [
+            '='   => fn($a, $b) => $a == $b,
+            '=='  => fn($a, $b) => $a == $b,
+            '===' => fn($a, $b) => $a === $b,
+            '!='  => fn($a, $b) => $a != $b,
+            '!==' => fn($a, $b) => $a !== $b,
+            '>'   => fn($a, $b) => $a > $b,
+            '<'   => fn($a, $b) => $a < $b,
+            '>='  => fn($a, $b) => $a >= $b,
+            '<='  => fn($a, $b) => $a <= $b,
+        ];
+
+        return new static(array_filter(
+            $this->items,
+            function ($item) use ($key, $value, $operator, $operators) {
+
+                if (! isset($operators[$operator])) {
+                    return false;
+                }
+
+                return $operators[$operator](
+                    $item[$key],
+                    $value
+                );
+            }
+        ));
+    }
+
+    public function firstWhere(
+        string $key,
+        mixed $value,
+        string $operator = '='
+    ): mixed {
+        foreach ($this->items as $item) {
+            $match = match ($operator) {
+                '=', '=='  => $item[$key] == $value,
+                '==='      => $item[$key] === $value,
+                '!='       => $item[$key] != $value,
+                '!=='      => $item[$key] !== $value,
+                '>'        => $item[$key] > $value,
+                '<'        => $item[$key] < $value,
+                '>='       => $item[$key] >= $value,
+                '<='       => $item[$key] <= $value,
+                default    => false,
+            };
+
+            if ($match) {
+                return $item;
+            }
+        }
+
+        return null;
+    }
 }
