@@ -8,7 +8,7 @@ class IntType implements Rule
 {
     public function passes(string $field, mixed $value): bool
     {
-        if(is_null($value)) {
+        if (is_null($value)) {
             return true;
         }
 
@@ -17,6 +17,6 @@ class IntType implements Rule
 
     public function message(string $field): string
     {
-        return "O campo {$field} deve ser do tipo int.";
+        return "The {$field} field must be an integer.";
     }
 }

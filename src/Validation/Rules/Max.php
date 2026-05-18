@@ -10,11 +10,11 @@ class Max implements Rule
 
     public function passes(string $field, mixed $value): bool
     {
-        if (is_null($value)){
+        if (is_null($value)) {
             return true;
         }
 
-        if (is_array($value)){
+        if (is_array($value)) {
             return count($value) <= $this->length;
         }
 
@@ -31,6 +31,6 @@ class Max implements Rule
 
     public function message(string $field): string
     {
-        return "{$field} deve contar no máximo {$this->length} caracteres";
+        return "The {$field} field must not be greater than {$this->length} characters.";
     }
 }

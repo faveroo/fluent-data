@@ -25,16 +25,17 @@ class ArrayType implements Rule
         return $this->allArray($value, $this->type);
     }
 
-    private function allArray(array $array, ?string $type ): bool
+    private function allArray(array $array, ?string $type): bool
     {
         $type = mb_strtolower($type);
         $method = "is_{$type}";
+
         foreach ($array as $item) {
             if (is_array($item)) {
-                if (!$this->allArray($item, $type)) {
+                if (! $this->allArray($item, $type)) {
                     return false;
                 }
-            } elseif (!$method($item)) {
+            } elseif (! $method($item)) {
                 return false;
             }
         }
@@ -44,6 +45,6 @@ class ArrayType implements Rule
 
     public function message(string $field): string
     {
-        return "O campo {$field} deve ser um array de tipo {$this->type}";
+        return "The {$field} field must be an array of {$this->type}.";
     }
 }

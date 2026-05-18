@@ -8,15 +8,15 @@ class Email implements Rule
 {
     public function passes(string $field, mixed $value): bool
     {
-        if(is_null($value)) {
+        if (is_null($value)) {
             return true;
         }
-        
-        return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;        
+
+        return filter_var($value, FILTER_VALIDATE_EMAIL) !== false;
     }
 
     public function message(string $field): string
     {
-        return "O campo {$field} deve ser um e-mail válido";
+        return "The {$field} field must be a valid email address.";
     }
 }

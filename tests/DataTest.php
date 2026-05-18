@@ -6,10 +6,10 @@ use Gabriel\FluentData\DTO\Attributes\Email;
 use Gabriel\FluentData\DTO\Attributes\IntType;
 use Gabriel\FluentData\DTO\Attributes\Max;
 use Gabriel\FluentData\DTO\Attributes\Min;
-use Gabriel\FluentData\DTO\Attributes\StringType;
-use Gabriel\FluentData\Validation\ValidationException;
 use Gabriel\FluentData\DTO\Attributes\Required;
+use Gabriel\FluentData\DTO\Attributes\StringType;
 use Gabriel\FluentData\DTO\Data\Data;
+use Gabriel\FluentData\Validation\ValidationException;
 use PHPUnit\Framework\TestCase;
 
 class DataTest extends TestCase
@@ -50,7 +50,6 @@ class DataTest extends TestCase
     public function test_it_returns_validation_errors(): void
     {
         try {
-
             UserData::fromArray([
                 'name' => '',
                 'email' => 'invalid-email',
@@ -59,9 +58,7 @@ class DataTest extends TestCase
             $this->fail(
                 'ValidationException was not thrown.'
             );
-
         } catch (ValidationException $e) {
-
             $errors = $e->errors();
 
             $this->assertArrayHasKey(
@@ -75,12 +72,12 @@ class DataTest extends TestCase
             );
 
             $this->assertEquals(
-                'O campo name é obrigatório.',
+                'The name field is required.',
                 $errors['name'][0]
             );
 
             $this->assertEquals(
-                'O campo email deve ser um e-mail válido',
+                'The email field must be a valid email address.',
                 $errors['email'][0]
             );
         }
@@ -93,7 +90,7 @@ class DataTest extends TestCase
         );
 
         UserData::fromArray([
-            'name' => 'ab'
+            'name' => 'ab',
         ]);
     }
 
@@ -105,7 +102,7 @@ class DataTest extends TestCase
 
         UserData::fromArray([
             'name' => 'Teste123456',
-            'email' => 'email@email.com'
+            'email' => 'email@email.com',
         ]);
     }
 
@@ -118,7 +115,7 @@ class DataTest extends TestCase
         UserData::fromArray([
             'name' => 'Name',
             'email' => 'email@email.com',
-            'uuid' => 1231231231231
+            'uuid' => 1231231231231,
         ]);
     }
 
@@ -132,7 +129,7 @@ class DataTest extends TestCase
             'name' => 'Name',
             'email' => 'email@email.com',
             'uuid' => 1231231231231,
-            'age' => "daikdawdaw"
+            'age' => 'daikdawdaw',
         ]);
     }
 
@@ -145,13 +142,12 @@ class DataTest extends TestCase
         UserData::fromArray([
             'name' => 'Name',
             'email' => 'email@email.com',
-            'uuid' => "1231231231231",
+            'uuid' => '1231231231231',
             'age' => 12,
             'config' => [
-                'teste' => "1231"
-            ]
+                'teste' => '1231',
+            ],
         ]);
-
     }
 }
 

@@ -10,7 +10,7 @@ class ValidationException extends Exception
         protected array $errors
     )
     {
-        parent::__construct('Validação falhou.');
+        parent::__construct('Validation was failed.');
     }
 
     public function errors(): array
