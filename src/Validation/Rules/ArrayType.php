@@ -44,6 +44,6 @@ class ArrayType implements Rule
 
     public function message(string $field): string
     {
-        return "O campo {$field} deve ser um array de string";
+        return "O campo {$field} deve ser um array de tipo {$this->type}";
     }
 }
