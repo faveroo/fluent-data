@@ -3,6 +3,9 @@
     "description": "Data-focused utility helpers for PHP collections, DTOs and pipelines",
     "type": "library",
     "license": "MIT",
+    "require": {
+        "php": "^8.3"
+    },
     "autoload": {
         "psr-4": {
             "Gabriel\\FluentData\\": "src/"
@@ -20,10 +23,12 @@
     "minimum-stability": "stable",
     "require-dev": {
         "phpunit/phpunit": "^13.1",
-        "friendsofphp/php-cs-fixer": "^3.95"
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/phpstan": "^2.1"
     },
     "scripts": {
         "test": "phpunit",
+        "analyse": "phpstan analyse --configuration=phpstan.neon.dist",
         "format": "php-cs-fixer fix",
         "format:check": "php-cs-fixer fix --dry-run --diff"
     }
