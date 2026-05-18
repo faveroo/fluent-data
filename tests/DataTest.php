@@ -149,6 +149,84 @@ class DataTest extends TestCase
             ],
         ]);
     }
+
+    public function test_data_from_array_ignores_missing_non_required_fields(): void
+    {
+        $data = UserData::fromArray([
+            'name' => 'Name',
+            'email' => 'email@email.com',
+        ]);
+
+        $this->assertSame(
+            [
+                'name' => 'Name',
+                'email' => 'email@email.com',
+            ],
+            $data->toArray()
+        );
+    }
+
+    public function test_data_allows_null_for_non_required_fields(): void
+    {
+        $data = UserData::fromArray([
+            'name' => 'Name',
+            'email' => 'email@email.com',
+            'age' => null,
+            'uuid' => null,
+        ]);
+
+        $this->assertSame(
+            [
+                'name' => 'Name',
+                'email' => 'email@email.com',
+                'age' => null,
+                'uuid' => null,
+            ],
+            $data->toArray()
+        );
+    }
+
+    public function test_data_collects_multiple_validation_errors_for_the_same_field(): void
+    {
+        try {
+            MultiRuleUserData::fromArray([
+                'name' => '',
+            ]);
+
+            $this->fail(
+                'ValidationException was not thrown.'
+            );
+        } catch (ValidationException $e) {
+            $errors = $e->errors();
+
+            $this->assertSame(
+                [
+                    'The name field is required.',
+                    'The name field must be at least 3 characters.',
+                ],
+                $errors['name']
+            );
+        }
+    }
+
+    public function test_data_only_and_masked_can_be_combined(): void
+    {
+        $data = UserData::fromArray([
+            'name' => 'Name',
+            'email' => 'email@email.com',
+            'password' => 'secret',
+            'uuid' => 'abc123',
+        ])->only(['name', 'email', 'password', 'uuid'])
+            ->masked(['password', 'uuid']);
+
+        $this->assertSame(
+            [
+                'name' => 'Name',
+                'email' => 'email@email.com',
+            ],
+            $data->toArray()
+        );
+    }
 }
 
 class UserData extends Data
@@ -174,4 +252,11 @@ class UserData extends Data
 
     #[ArrayType('int')]
     protected array $config;
+}
+
+class MultiRuleUserData extends Data
+{
+    #[Required]
+    #[Min(3)]
+    protected string $name;
 }

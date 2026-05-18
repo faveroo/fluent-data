@@ -119,6 +119,46 @@ class CollectionTest extends TestCase
         );
     }
 
+    public function test_collection_first_and_last_return_null_for_empty_collection(): void
+    {
+        $collection = collect([]);
+
+        $this->assertNull($collection->first());
+        $this->assertNull($collection->last());
+    }
+
+    public function test_collection_map_returns_empty_collection_when_items_are_empty(): void
+    {
+        $result = collect([])
+            ->map(fn ($item) => $item);
+
+        $this->assertSame([], $result->all());
+    }
+
+    public function test_collection_filter_returns_empty_collection_when_no_items_match(): void
+    {
+        $result = collect([1, 3, 5])
+            ->filter(fn (int $item) => $item % 2 === 0);
+
+        $this->assertSame([], $result->all());
+    }
+
+    public function test_collection_pluck_returns_null_for_missing_key(): void
+    {
+        $result = Collection::make($this->items)
+            ->pluck('stock');
+
+        $this->assertSame([null, null], $result->all());
+    }
+
+    public function test_collection_contains_uses_strict_comparison(): void
+    {
+        $collection = collect([1, 2, 3]);
+
+        $this->assertFalse($collection->contains('1'));
+        $this->assertTrue($collection->contains(1));
+    }
+
 }
 
 class ArrayableValue implements Arrayable

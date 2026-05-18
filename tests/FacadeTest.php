@@ -94,4 +94,47 @@ class FacadeTest extends TestCase
             $result
         );
     }
+
+    public function test_str_helpers_support_empty_strings(): void
+    {
+        $this->assertSame('', Str::slug(''));
+        $this->assertSame('', Str::snake(''));
+        $this->assertSame([], Str::ascii(''));
+        $this->assertSame('', Str::binary(''));
+    }
+
+    public function test_str_slug_normalizes_multiple_separators(): void
+    {
+        $result = Str::slug('Hello---world___test');
+
+        $this->assertSame(
+            'hello-world-test',
+            $result
+        );
+    }
+
+    public function test_str_snake_normalizes_multiple_separators_and_case(): void
+    {
+        $result = Str::snake('  MyHTTP-Class__Name  ');
+
+        $this->assertSame(
+            'my_h_t_t_p_class_name',
+            $result
+        );
+    }
+
+    public function test_str_helpers_are_case_sensitive(): void
+    {
+        $this->assertFalse(
+            Str::startsWith('Hello World!', 'hello')
+        );
+
+        $this->assertFalse(
+            Str::endsWith('Hello World!', 'world!')
+        );
+
+        $this->assertFalse(
+            Str::contains('The quick brown fox', 'FOX')
+        );
+    }
 }
