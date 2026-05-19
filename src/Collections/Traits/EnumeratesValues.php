@@ -170,4 +170,24 @@ trait EnumeratesValues
 
         return (float) $this->sum($callback) / count($this->items);
     }
+
+    public function groupBy(
+        string|callable $key
+    ): static {
+         $grouped = [];
+
+        foreach ($this->items as $item) {
+            if (is_callable($key)) {
+                $groupKey = $key($item);
+            } else {
+                if (is_array($item)) {
+                    $groupKey = $item[$key] ?? null;
+                } else {
+                    $groupKey = $item->$key ?? null;
+                }
+            }
+            $grouped[$groupKey][] = $item;
+        }
+        return new static($grouped);
+    }
 }
