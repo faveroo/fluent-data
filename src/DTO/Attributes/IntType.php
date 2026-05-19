@@ -11,6 +11,6 @@ class IntType implements Ruler
 {
     public function rule(): Rule
     {
-        return new \Gabriel\FluentData\Validation\Rules\IntType;
+        return new \Gabriel\FluentData\Validation\Rules\IntType();
     }
 }

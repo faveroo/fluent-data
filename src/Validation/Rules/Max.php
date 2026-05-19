@@ -6,7 +6,9 @@ use Gabriel\FluentData\Validation\Rule;
 
 class Max implements Rule
 {
-    public function __construct(protected int $length) {}
+    public function __construct(protected int $length)
+    {
+    }
 
     public function passes(string $field, mixed $value): bool
     {

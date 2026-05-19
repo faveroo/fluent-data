@@ -6,7 +6,9 @@ use Gabriel\FluentData\Validation\Rule;
 
 class Min implements Rule
 {
-    public function __construct(public int $length) {}
+    public function __construct(public int $length)
+    {
+    }
 
     public function passes(string $field, mixed $value): bool
     {

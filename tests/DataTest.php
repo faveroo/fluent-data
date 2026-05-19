@@ -1,6 +1,5 @@
 <?php
 
-use Gabriel\FluentData\DTO\Attributes\ArrayString;
 use Gabriel\FluentData\DTO\Attributes\ArrayType;
 use Gabriel\FluentData\DTO\Attributes\Email;
 use Gabriel\FluentData\DTO\Attributes\IntType;

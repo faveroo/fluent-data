@@ -71,13 +71,13 @@ class CollectionTest extends TestCase
     public function test_collection_filter_function(): void
     {
         $result = collect([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-                    ->filter(fn($item) => $item % 2 == 0)->all();
-                    
+                    ->filter(fn ($item) => $item % 2 == 0)->all();
+
         $this->assertSame(
             [2, 4, 6, 8, 10],
             $result
         );
-        
+
     }
 
     public function test_collection_to_array_serializes_mixed_values(): void
@@ -340,7 +340,8 @@ class ArrayableValue implements Arrayable
 {
     public function __construct(
         private array $data
-    ) {}
+    ) {
+    }
 
     public function toArray(): array
     {
@@ -352,7 +353,8 @@ class JsonValue implements \JsonSerializable
 {
     public function __construct(
         private mixed $data
-    ) {}
+    ) {
+    }
 
     public function jsonSerialize(): mixed
     {

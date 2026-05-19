@@ -85,15 +85,15 @@ trait EnumeratesValues
         string $operator = '='
     ): static {
         $operators = [
-            '='   => fn($a, $b) => $a == $b,
-            '=='  => fn($a, $b) => $a == $b,
-            '===' => fn($a, $b) => $a === $b,
-            '!='  => fn($a, $b) => $a != $b,
-            '!==' => fn($a, $b) => $a !== $b,
-            '>'   => fn($a, $b) => $a > $b,
-            '<'   => fn($a, $b) => $a < $b,
-            '>='  => fn($a, $b) => $a >= $b,
-            '<='  => fn($a, $b) => $a <= $b,
+            '='   => fn ($a, $b) => $a == $b,
+            '=='  => fn ($a, $b) => $a == $b,
+            '===' => fn ($a, $b) => $a === $b,
+            '!='  => fn ($a, $b) => $a != $b,
+            '!==' => fn ($a, $b) => $a !== $b,
+            '>'   => fn ($a, $b) => $a > $b,
+            '<'   => fn ($a, $b) => $a < $b,
+            '>='  => fn ($a, $b) => $a >= $b,
+            '<='  => fn ($a, $b) => $a <= $b,
         ];
 
         return new static(array_filter(
@@ -140,8 +140,7 @@ trait EnumeratesValues
 
     public function sum(
         string|callable|null $callback = null
-    ): int|float
-    {
+    ): int|float {
         if ($callback === null) {
             return array_sum($this->items);
         }
@@ -164,7 +163,7 @@ trait EnumeratesValues
         string|callable|null $callback = null
     ): float|null {
 
-        if(empty($this->items)) {
+        if (empty($this->items)) {
             return null;
         }
 
@@ -174,7 +173,7 @@ trait EnumeratesValues
     public function groupBy(
         string|callable $key
     ): static {
-         $grouped = [];
+        $grouped = [];
 
         foreach ($this->items as $item) {
             if (is_callable($key)) {

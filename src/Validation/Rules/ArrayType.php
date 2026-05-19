@@ -6,7 +6,9 @@ use Gabriel\FluentData\Validation\Rule;
 
 class ArrayType implements Rule
 {
-    public function __construct(protected ?string $type = null) {}
+    public function __construct(protected ?string $type = null)
+    {
+    }
 
     public function passes(string $field, mixed $value): bool
     {

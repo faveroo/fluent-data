@@ -38,7 +38,7 @@ class FacadeTest extends TestCase
     public function test_str_snake_function(): void
     {
         $result = Str::snake('This is my snake  Function');
- 
+
         $this->assertSame(
             'this_is_my_snake_function',
             $result

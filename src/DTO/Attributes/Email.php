@@ -11,6 +11,6 @@ class Email implements Ruler
 {
     public function rule(): Rule
     {
-        return new \Gabriel\FluentData\Validation\Rules\Email;
+        return new \Gabriel\FluentData\Validation\Rules\Email();
     }
 }

@@ -62,12 +62,12 @@ class Arr
     ): array {
         $results = [];
 
-        foreach($items as $index => $item) {
+        foreach ($items as $index => $item) {
             $value = is_array($item)
                 ? ($item[$key] ?? null)
                 : ($item->{$key} ?? null);
-                
-            if($value !== null) {
+
+            if ($value !== null) {
                 $results[$index] = $value;
             }
         }
@@ -78,11 +78,10 @@ class Arr
     public function only(
         array $items,
         array $keys
-    ) : array
-    {
+    ): array {
         return array_intersect_key(
             $items,
             array_flip($keys)
-        );  
+        );
     }
 }

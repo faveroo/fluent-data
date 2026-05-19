@@ -84,27 +84,24 @@ class Str
     }
 
     public function ascii(
-        string $str 
-    ): array
-    {
+        string $str
+    ): array {
         return array_values(unpack("C*", $str));
     }
 
     public function randomize(
         string $str
-    ): string
-    {
+    ): string {
         return str_shuffle($str);
     }
 
     public function binary(
         string $str
-    ): string
-    {
+    ): string {
         $chars = str_split($str);
         $binary = [];
 
-        foreach($chars as $char) {
+        foreach ($chars as $char) {
             $binary[] = str_pad(decbin(ord($char)), 8, '0', STR_PAD_LEFT);
         }
 

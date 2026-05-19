@@ -10,7 +10,9 @@ use Gabriel\FluentData\Validation\Rules\Max as MaxRule;
 #[Attribute]
 class Max implements Ruler
 {
-    public function __construct(public int $value) {}
+    public function __construct(public int $value)
+    {
+    }
 
     public function rule(): Rule
     {

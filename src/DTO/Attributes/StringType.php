@@ -11,6 +11,6 @@ class StringType implements Ruler
 {
     public function rule(): Rule
     {
-        return new \Gabriel\FluentData\Validation\Rules\StringType;
+        return new \Gabriel\FluentData\Validation\Rules\StringType();
     }
 }

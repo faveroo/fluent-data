@@ -10,7 +10,9 @@ use Gabriel\FluentData\Validation\Rules\ArrayType as ArrayTypeRule;
 #[Attribute]
 class ArrayType implements Ruler
 {
-    public function __construct(protected ?string $type = null) {}
+    public function __construct(protected ?string $type = null)
+    {
+    }
     public function rule(): Rule
     {
         return new ArrayTypeRule($this->type);

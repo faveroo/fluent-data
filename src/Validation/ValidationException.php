@@ -8,8 +8,7 @@ class ValidationException extends Exception
 {
     public function __construct(
         protected array $errors
-    )
-    {
+    ) {
         parent::__construct('Validation was failed.');
     }
 

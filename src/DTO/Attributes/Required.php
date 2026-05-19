@@ -11,6 +11,6 @@ class Required implements Ruler
 {
     public function rule(): Rule
     {
-        return new \Gabriel\FluentData\Validation\Rules\Required;
+        return new \Gabriel\FluentData\Validation\Rules\Required();
     }
 }
