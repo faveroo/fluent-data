@@ -250,6 +250,90 @@ class CollectionTest extends TestCase
         $this->assertNull($result);
     }
 
+    public function test_collection_group_by_groups_array_items_by_key(): void
+    {
+        $result = Collection::make([
+            ['name' => 'Abacate', 'type' => 'fruit'],
+            ['name' => 'Alface', 'type' => 'vegetable'],
+            ['name' => 'Manga', 'type' => 'fruit'],
+        ])->groupBy('type');
+
+        $this->assertSame(
+            [
+                'fruit' => [
+                    ['name' => 'Abacate', 'type' => 'fruit'],
+                    ['name' => 'Manga', 'type' => 'fruit'],
+                ],
+                'vegetable' => [
+                    ['name' => 'Alface', 'type' => 'vegetable'],
+                ],
+            ],
+            $result->all()
+        );
+    }
+
+    public function test_collection_group_by_groups_object_items_by_property(): void
+    {
+        $banana = (object) ['name' => 'Banana', 'type' => 'fruit'];
+        $carrot = (object) ['name' => 'Cenoura', 'type' => 'vegetable'];
+        $mango = (object) ['name' => 'Manga', 'type' => 'fruit'];
+
+        $result = Collection::make([$banana, $carrot, $mango])
+            ->groupBy('type');
+
+        $this->assertSame(
+            [
+                'fruit' => [$banana, $mango],
+                'vegetable' => [$carrot],
+            ],
+            $result->all()
+        );
+    }
+
+    public function test_collection_group_by_accepts_callback(): void
+    {
+        $result = Collection::make([
+            ['name' => 'Abacate', 'price' => 10],
+            ['name' => 'Manga', 'price' => 20],
+            ['name' => 'Melancia', 'price' => 30],
+        ])->groupBy(
+            fn (array $item) => $item['price'] >= 20 ? 'expensive' : 'cheap'
+        );
+
+        $this->assertSame(
+            [
+                'cheap' => [
+                    ['name' => 'Abacate', 'price' => 10],
+                ],
+                'expensive' => [
+                    ['name' => 'Manga', 'price' => 20],
+                    ['name' => 'Melancia', 'price' => 30],
+                ],
+            ],
+            $result->all()
+        );
+    }
+
+    public function test_collection_group_by_uses_null_group_for_missing_key(): void
+    {
+        $result = Collection::make([
+            ['name' => 'Abacate', 'type' => 'fruit'],
+            ['name' => 'Misterio'],
+        ])->groupBy('type');
+
+        $this->assertSame(
+            [
+                'fruit' => [
+                    ['name' => 'Abacate', 'type' => 'fruit'],
+                ],
+                '' => [
+                    ['name' => 'Misterio'],
+                ],
+            ],
+            $result->all()
+        );
+    }
+
 }
 
 class ArrayableValue implements Arrayable
