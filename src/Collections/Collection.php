@@ -122,4 +122,23 @@ class Collection extends Fluent implements
         return $item;
     }
 
+    public function isEmpty(): bool
+    {
+        return empty($this->items);
+    }
+
+    public function isNotEmpty(): bool
+    {
+        return !$this->isEmpty();
+    }
+
+    public function values(): static
+    {
+        return new static(array_values($this->items));
+    }
+
+    public function keys(): static
+    {
+        return new static(array_keys($this->items));
+    }
 }
