@@ -35,10 +35,20 @@ class Str
 
     public function snake(string $value): string
     {
-        $value = trim($value); // remove espaço extra
-        $value = preg_replace('/[\s-]+/', '_', $value); // espaço e hífen viram underscore
-        $value = preg_replace('/(.)(?=[A-Z])/u', '$1_', $value); // underscore antes de letras maiúsculas
-        $value = preg_replace('/_+/', '_', $value); // remove underscore duplicados
+        $value = trim($value);
+        $value = preg_replace('/[\s-]+/', '_', $value);
+        $value = preg_replace('/(.)(?=[A-Z])/u', '$1_', $value);
+        $value = preg_replace('/_+/', '_', $value);
+        return strtolower($value);
+    }
+
+    public function kebab(string $value): string
+    {
+        $value = trim($value);
+
+        $value = preg_replace('/([a-z0-9])([A-Z])/', '$1-$2', $value);
+        $value = preg_replace('/[\s_\-]+/', '-', $value);
+
         return strtolower($value);
     }
 
