@@ -198,7 +198,7 @@ trait EnumeratesValues
         $grouped = [];
 
         foreach ($this->items as $item) {
-            $groupKey = $this->valueFromItem($item, $key);
+            $groupKey = $this->valueFromItem($item, $key) ?? '';
 
             $grouped[$groupKey][] = $item;
         }
