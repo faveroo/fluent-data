@@ -84,4 +84,45 @@ class Arr
             array_flip($keys)
         );
     }
+
+    public function get(
+        array $items,
+        string|int|null $key,
+    ): mixed {
+        if($key === null) {
+            return $items;
+        }
+
+        $segments = explode('.', (string) $key);
+        $value = $items;
+
+        foreach ($segments as $segment) {
+            if(!is_array($value) || !array_key_exists($segment, $value)) {
+                return value(null);
+            }
+
+            $value = $value[$segment];
+        }
+
+        return $value;
+    }
+
+    public function has(
+        array $items,
+        string|int $key
+    ): bool {
+        $segments = explode('.', (string) $key);
+        $value = $items;
+
+        foreach ($segments as $segment) {
+            if (! is_array($value) || ! array_key_exists($segment, $value)) {
+                return false;
+            }
+
+            $value = $value[$segment];
+        }
+
+        return true;
+    }
+
 }
