@@ -142,4 +142,32 @@ class Str
             ? $string
             : substr($string, $position + strlen($search));
     }
+
+    function between(string $string, string $start, string $end): string
+    {
+        $startPos = strpos($string, $start);
+        
+        if ($startPos === false) {
+            return '';
+        }
+
+        $startPos += strlen($start);
+        $endPos = strpos($string, $end, $startPos);
+
+        if ($endPos === false) {
+            return '';
+        }
+
+        return substr($string, $startPos, $endPos - $startPos);
+    }
+
+    function has(string $string, string $search, int $flag = 0): bool
+    {
+        if($flag === 1) {
+            return stripos($string, $search) !== false;
+        }
+
+        return strpos($string, $search) !== false;
+
+    }
 }
