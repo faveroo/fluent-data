@@ -4,6 +4,29 @@ namespace Gabriel\FluentData\Collections\Traits;
 
 trait EnumeratesValues
 {
+    protected function valueFromItem(
+        mixed $item,
+        string|callable|null $key = null
+    ): mixed {
+        if (is_callable($key)) {
+            return $key($item);
+        }
+
+        if ($key === null) {
+            return $item;
+        }
+
+        if (is_array($item)) {
+            return $item[$key] ?? null;
+        }
+
+        if (is_object($item)) {
+            return $item->{$key} ?? null;
+        }
+
+        return null;
+    }
+
     public function map(callable $callback): static
     {
         return new static(
@@ -105,7 +128,7 @@ trait EnumeratesValues
                 }
 
                 return $operators[$operator](
-                    $item[$key],
+                    $this->valueFromItem($item, $key),
                     $value
                 );
             }
@@ -118,15 +141,17 @@ trait EnumeratesValues
         string $operator = '='
     ): mixed {
         foreach ($this->items as $item) {
+            $itemValue = $this->valueFromItem($item, $key);
+
             $match = match ($operator) {
-                '=', '=='  => $item[$key] == $value,
-                '==='      => $item[$key] === $value,
-                '!='       => $item[$key] != $value,
-                '!=='      => $item[$key] !== $value,
-                '>'        => $item[$key] > $value,
-                '<'        => $item[$key] < $value,
-                '>='       => $item[$key] >= $value,
-                '<='       => $item[$key] <= $value,
+                '=', '=='  => $itemValue == $value,
+                '==='      => $itemValue === $value,
+                '!='       => $itemValue != $value,
+                '!=='      => $itemValue !== $value,
+                '>'        => $itemValue > $value,
+                '<'        => $itemValue < $value,
+                '>='       => $itemValue >= $value,
+                '<='       => $itemValue <= $value,
                 default    => false,
             };
 
@@ -148,10 +173,7 @@ trait EnumeratesValues
         return array_reduce(
             $this->items,
             function ($carry, $item) use ($callback) {
-
-                $value = is_callable($callback)
-                    ? $callback($item)
-                    : $item[$callback];
+                $value = $this->valueFromItem($item, $callback);
 
                 return $carry + $value;
             },
@@ -176,17 +198,90 @@ trait EnumeratesValues
         $grouped = [];
 
         foreach ($this->items as $item) {
-            if (is_callable($key)) {
-                $groupKey = $key($item);
-            } else {
-                if (is_array($item)) {
-                    $groupKey = $item[$key] ?? null;
-                } else {
-                    $groupKey = $item->$key ?? null;
-                }
-            }
+            $groupKey = $this->valueFromItem($item, $key) ?? '';
+
             $grouped[$groupKey][] = $item;
         }
+
         return new static($grouped);
+    }
+
+    public function sortBy(string|callable $key): static
+    {
+        $items = $this->items;
+
+        usort(
+            $items,
+            function (mixed $left, mixed $right) use ($key): int {
+                return $this->valueFromItem($left, $key)
+                    <=> $this->valueFromItem($right, $key);
+            }
+        );
+
+        return new static($items);
+    }
+
+    public function keyBy(string|callable $key): static
+    {
+        $results = [];
+
+        foreach ($this->items as $item) {
+            $results[$this->valueFromItem($item, $key)] = $item;
+        }
+
+        return new static($results);
+    }
+
+    public function unique(?string $column = null): static
+    {
+        $results = [];
+        $seen = [];
+
+        foreach ($this->items as $item) {
+            $value = $this->valueFromItem($item, $column);
+            $serialized = is_scalar($value) || $value === null
+                ? $value
+                : serialize($value);
+
+            if (in_array($serialized, $seen, true)) {
+                continue;
+            }
+
+            $seen[] = $serialized;
+            $results[] = $item;
+        }
+
+        return new static($results);
+    }
+
+    public function take(int $limit): static
+    {
+        if ($limit === 0) {
+            return new static([]);
+        }
+
+        if ($limit > 0) {
+            return new static(
+                array_slice($this->items, 0, $limit)
+            );
+        }
+
+        return new static(
+            array_slice($this->items, $limit)
+        );
+    }
+
+    public function chunk(int $size): static
+    {
+        if ($size < 1) {
+            return new static([]);
+        }
+
+        return new static(
+            array_map(
+                fn (array $chunk) => new static($chunk),
+                array_chunk($this->items, $size)
+            )
+        );
     }
 }

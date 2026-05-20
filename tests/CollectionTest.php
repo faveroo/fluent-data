@@ -334,6 +334,136 @@ class CollectionTest extends TestCase
         );
     }
 
+    public function test_collection_sort_by_orders_items_by_key(): void
+    {
+        $result = Collection::make([
+            ['name' => 'Manga', 'price' => 20],
+            ['name' => 'Abacate', 'price' => 10],
+            ['name' => 'Melancia', 'price' => 30],
+        ])->sortBy('price');
+
+        $this->assertSame(
+            [
+                ['name' => 'Abacate', 'price' => 10],
+                ['name' => 'Manga', 'price' => 20],
+                ['name' => 'Melancia', 'price' => 30],
+            ],
+            $result->all()
+        );
+    }
+
+    public function test_collection_sort_by_accepts_callback(): void
+    {
+        $result = Collection::make([
+            ['name' => 'Melancia'],
+            ['name' => 'Uva'],
+            ['name' => 'Abacate'],
+        ])->sortBy(
+            fn (array $item) => strlen($item['name'])
+        );
+
+        $this->assertSame(
+            [
+                ['name' => 'Uva'],
+                ['name' => 'Abacate'],
+                ['name' => 'Melancia'],
+            ],
+            $result->all()
+        );
+    }
+
+    public function test_collection_key_by_reindexes_items_by_key(): void
+    {
+        $result = Collection::make([
+            ['id' => 10, 'name' => 'Ana'],
+            ['id' => 20, 'name' => 'Bruno'],
+        ])->keyBy('id');
+
+        $this->assertSame(
+            [
+                10 => ['id' => 10, 'name' => 'Ana'],
+                20 => ['id' => 20, 'name' => 'Bruno'],
+            ],
+            $result->all()
+        );
+    }
+
+    public function test_collection_key_by_uses_last_item_for_duplicate_keys(): void
+    {
+        $result = Collection::make([
+            ['id' => 10, 'name' => 'Ana'],
+            ['id' => 10, 'name' => 'Bruno'],
+        ])->keyBy('id');
+
+        $this->assertSame(
+            [
+                10 => ['id' => 10, 'name' => 'Bruno'],
+            ],
+            $result->all()
+        );
+    }
+
+    public function test_collection_unique_removes_duplicate_scalar_values(): void
+    {
+        $result = collect([1, 1, 2, 3, 3])
+            ->unique();
+
+        $this->assertSame([1, 2, 3], $result->all());
+    }
+
+    public function test_collection_unique_can_remove_duplicates_by_column(): void
+    {
+        $result = Collection::make([
+            ['email' => 'ana@email.com', 'name' => 'Ana'],
+            ['email' => 'bruno@email.com', 'name' => 'Bruno'],
+            ['email' => 'ana@email.com', 'name' => 'Ana 2'],
+        ])->unique('email');
+
+        $this->assertSame(
+            [
+                ['email' => 'ana@email.com', 'name' => 'Ana'],
+                ['email' => 'bruno@email.com', 'name' => 'Bruno'],
+            ],
+            $result->all()
+        );
+    }
+
+    public function test_collection_take_returns_first_items(): void
+    {
+        $result = collect([1, 2, 3, 4, 5])
+            ->take(3);
+
+        $this->assertSame([1, 2, 3], $result->all());
+    }
+
+    public function test_collection_take_supports_negative_limit(): void
+    {
+        $result = collect([1, 2, 3, 4, 5])
+            ->take(-2);
+
+        $this->assertSame([4, 5], $result->all());
+    }
+
+    public function test_collection_chunk_splits_items_into_multiple_collections(): void
+    {
+        $result = collect([1, 2, 3, 4, 5])
+            ->chunk(2);
+
+        $this->assertCount(3, $result->all());
+        $this->assertInstanceOf(Collection::class, $result->all()[0]);
+        $this->assertSame([1, 2], $result->all()[0]->all());
+        $this->assertSame([3, 4], $result->all()[1]->all());
+        $this->assertSame([5], $result->all()[2]->all());
+    }
+
+    public function test_collection_chunk_returns_empty_collection_for_invalid_size(): void
+    {
+        $result = collect([1, 2, 3])
+            ->chunk(0);
+
+        $this->assertSame([], $result->all());
+    }
+
 }
 
 class ArrayableValue implements Arrayable
