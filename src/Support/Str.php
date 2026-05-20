@@ -7,7 +7,7 @@ class Str
     public function slug(string $value): string
     {
         return strtolower(
-            preg_replace('/[^a-zA-Z0-9]+/', '-', trim($value))
+            preg_replace('/[^\p{L}\p{N}]+/u', '-', trim($value))
         );
     }
 
@@ -116,5 +116,58 @@ class Str
         }
 
         return implode(' ', $binary);
+    }
+
+    public function limit(
+        string $str,
+        int $limit
+    ): string {
+        return substr($str, 0, $limit);
+    }
+
+    function before(string $string, string $search): string
+    {
+        $position = strpos($string, $search);
+
+        return $position === false
+            ? $string
+            : substr($string, 0, $position);
+    }
+
+    function after(string $string, string $search): string
+    {
+        $position = strpos($string, $search);
+
+        return $position === false
+            ? $string
+            : substr($string, $position + strlen($search));
+    }
+
+    function between(string $string, string $start, string $end): string
+    {
+        $startPos = strpos($string, $start);
+        
+        if ($startPos === false) {
+            return '';
+        }
+
+        $startPos += strlen($start);
+        $endPos = strpos($string, $end, $startPos);
+
+        if ($endPos === false) {
+            return '';
+        }
+
+        return substr($string, $startPos, $endPos - $startPos);
+    }
+
+    function has(string $string, string $search, int $flag = 0): bool
+    {
+        if($flag === 1) {
+            return stripos($string, $search) !== false;
+        }
+
+        return strpos($string, $search) !== false;
+
     }
 }
