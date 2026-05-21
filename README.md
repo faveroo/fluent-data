@@ -55,6 +55,14 @@ $topCustomers = collect([
     ->all();
 ```
 
+Useful collection methods include:
+
+- `map`, `filter`, `reject`, `reduce`
+- `where`, `firstWhere`
+- `sum`, `avg`
+- `sortBy`, `groupBy`, `keyBy`, `unique`
+- `take`, `chunk`, `pluck`, `contains`
+
 ## DTOs
 
 Create typed data objects from arrays and validate them with attributes.

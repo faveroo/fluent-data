@@ -20,6 +20,8 @@ namespace Gabriel\FluentData\Facades;
  * @method static string after(string $string, string $search)
  * @method static string between(string $string, string $start, string $end)
  * @method static bool has(string $string, string $search, int $flag = 0)
+ * @method static string|array replace(string $search, string $replace, string $subject)
+ * @method static string uuid()
  */
 class Str extends Facade
 {
