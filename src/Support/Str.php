@@ -125,7 +125,7 @@ class Str
         return substr($str, 0, $limit);
     }
 
-    function before(string $string, string $search): string
+    public function before(string $string, string $search): string
     {
         $position = strpos($string, $search);
 
@@ -134,7 +134,7 @@ class Str
             : substr($string, 0, $position);
     }
 
-    function after(string $string, string $search): string
+    public function after(string $string, string $search): string
     {
         $position = strpos($string, $search);
 
@@ -143,7 +143,7 @@ class Str
             : substr($string, $position + strlen($search));
     }
 
-    function between(string $string, string $start, string $end): string
+    public function between(string $string, string $start, string $end): string
     {
         $startPos = strpos($string, $start);
         
@@ -161,7 +161,7 @@ class Str
         return substr($string, $startPos, $endPos - $startPos);
     }
 
-    function has(string $string, string $search, int $flag = 0): bool
+    public function has(string $string, string $search, int $flag = 0): bool
     {
         if($flag === 1) {
             return stripos($string, $search) !== false;
