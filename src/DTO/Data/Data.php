@@ -6,6 +6,8 @@ use Gabriel\FluentData\Contracts\Arrayable;
 use Gabriel\FluentData\Contracts\Jsonable;
 use Gabriel\FluentData\Validation\ValidationException;
 use ReflectionClass;
+use ReflectionNamedType;
+use ReflectionProperty;
 
 /**
  * @phpstan-consistent-constructor
@@ -40,9 +42,14 @@ abstract class Data implements Arrayable, Jsonable
             $name = $property->getName();
 
             if (array_key_exists($name, $data)) {
+                $value = static::hydratePropertyValue(
+                    $property,
+                    $data[$name]
+                );
+
                 $property->setValue(
                     $instance,
-                    $data[$name]
+                    $value
                 );
             }
         }
@@ -104,6 +111,10 @@ abstract class Data implements Arrayable, Jsonable
     public function toArray(): array
     {
         $attributes = get_object_vars($this);
+        $attributes = array_map(
+            fn (mixed $value) => $this->normalizeArrayValue($value),
+            $attributes
+        );
 
         foreach ($this->internalProperties() as $property) {
             unset($attributes[$property]);
@@ -141,5 +152,56 @@ abstract class Data implements Arrayable, Jsonable
             'masked',
             'only',
         ];
+    }
+
+    protected static function propertyDataClass(
+        ReflectionProperty $property,
+    ): ?string {
+        $type = $property->getType();
+
+        if (! $type instanceof ReflectionNamedType) {
+            return null;
+        }
+
+        if ($type->isBuiltin()) {
+            return null;
+        }
+
+        $className = $type->getName();
+
+        if (is_subclass_of($className, self::class)) {
+            return $className;
+        }
+
+        return null;
+    }
+
+    protected static function hydratePropertyValue(
+        ReflectionProperty $property,
+        mixed $value
+    ): mixed {
+        $dataClass = static::propertyDataClass($property);
+
+        if($dataClass !== null && is_array($value)) {
+            return $dataClass::fromArray($value);
+        }
+
+        return $value;
+    }
+
+    protected function normalizeArrayValue(mixed $value): mixed
+    {
+        if ($value instanceof Arrayable) {
+            return $value->toArray();
+        }
+
+        if (is_array($value)) {
+            return array_map(
+                fn (mixed $item) => $this->normalizeArrayValue($item),
+                $value
+            );
+        }
+
+        return $value;
     }
 }
