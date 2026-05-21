@@ -262,4 +262,22 @@ class FacadeTest extends TestCase
             Str::contains('The quick brown fox', 'FOX')
         );
     }
+
+    public function test_str_replace_function_return_string_correctly(): void
+    {
+        $this->assertSame(
+            'Olá Bruno',
+            Str::replace('Ana', 'Bruno', 'Olá Ana')
+        );
+    }
+
+    public function test_str_uuid_function_with_regular_expression(): void
+    {
+        $result = Str::uuid();
+
+        $this->assertMatchesRegularExpression(
+            '/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/',
+            $result
+        );
+    }
 }
