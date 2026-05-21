@@ -226,6 +226,74 @@ class DataTest extends TestCase
             $data->toArray()
         );
     }
+
+    public function test_data_can_hydrate_nested_dto(): void
+    {
+        $user = NestedUserData::fromArray([
+            'name' => 'Ana',
+            'address' => [
+                'city' => 'Sao Paulo',
+            ],
+        ]);
+
+        $this->assertSame(
+            [
+                'name' => 'Ana',
+                'address' => [
+                    'city' => 'Sao Paulo',
+                ],
+            ],
+            $user->toArray()
+        );
+    }
+
+    public function test_data_can_serialize_nested_dto_to_json(): void
+    {
+        $user = NestedUserData::fromArray([
+            'name' => 'Ana',
+            'address' => [
+                'city' => 'Sao Paulo',
+            ],
+        ]);
+
+        $this->assertSame(
+            json_encode([
+                'name' => 'Ana',
+                'address' => [
+                    'city' => 'Sao Paulo',
+                ],
+            ], JSON_PRETTY_PRINT),
+            $user->toJson()
+        );
+    }
+
+    public function test_data_allows_missing_nested_dto_when_not_provided(): void
+    {
+        $user = NestedUserData::fromArray([
+            'name' => 'Ana',
+        ]);
+
+        $this->assertSame(
+            [
+                'name' => 'Ana',
+            ],
+            $user->toArray()
+        );
+    }
+
+    public function test_data_validates_nested_dto_payload(): void
+    {
+        $this->expectException(
+            ValidationException::class
+        );
+
+        NestedUserData::fromArray([
+            'name' => 'Ana',
+            'address' => [
+                'city' => '',
+            ],
+        ]);
+    }
 }
 
 class UserData extends Data
@@ -258,4 +326,18 @@ class MultiRuleUserData extends Data
     #[Required]
     #[Min(3)]
     protected string $name;
+}
+
+class AddressData extends Data
+{
+    #[Required]
+    protected string $city;
+}
+
+class NestedUserData extends Data
+{
+    #[Required]
+    protected string $name;
+
+    protected AddressData $address;
 }
