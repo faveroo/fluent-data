@@ -1,5 +1,5 @@
 {
-    "name": "gabriel.hoffmann/fluent-data",
+    "name": "faveroo/fluent-data",
     "description": "Data-focused utility helpers for PHP collections, DTOs and pipelines",
     "type": "library",
     "license": "MIT",
